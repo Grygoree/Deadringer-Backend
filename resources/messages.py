@@ -29,3 +29,12 @@ def update_message(id):
         'message': 'Not implemented'
     }), 501
 
+@messages.route('<id>', methods=["DELETE"])
+def delete_message(id):
+    return jsonify(data={
+        'route': 'Delete message ' + id
+    }, status={
+        'code': 501,
+        'message': 'Not implemented'
+    }), 501
+
