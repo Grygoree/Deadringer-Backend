@@ -5,10 +5,20 @@ messages = Blueprint('messages', __name__)
 @messages.route('', methods=["GET"])
 def get_messages():
     return jsonify(data={
-        #Data here
+        'route': 'Index messages'
     }, status={
         'code': 501, 
         'message': 'Not implemented'
     }), 501
 
+@messages.route('', methods=["POST"])
+def create_message():
+    return jsonify(data={
+        'route': 'Create message'
+    }, status={
+        'code': 501,
+        'message': 'Not implemented'
+    }), 501
+
+#@messages.route()
 
