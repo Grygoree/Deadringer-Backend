@@ -3,3 +3,5 @@
 
 # VIM swap files
 *.swp
+
+__pycache__
