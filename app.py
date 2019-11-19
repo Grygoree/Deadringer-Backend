@@ -1,5 +1,6 @@
 from flask import Flask
 from resources.messages import messages
+import models
 
 #TODO: Fix these for provisioning
 DEBUG = True
@@ -14,4 +15,5 @@ def hello():
     return 'hi'
 
 if __name__ == '__main__':
+    models.initialize()
     app.run(debug=DEBUG, port=PORT)
