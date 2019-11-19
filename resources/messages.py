@@ -20,5 +20,12 @@ def create_message():
         'message': 'Not implemented'
     }), 501
 
-#@messages.route()
+@messages.route('<id>', methods=["PUT"])
+def update_message(id):
+    return jsonify(data={
+        'route': 'Update message ' + id
+    }, status={
+        'code': 501,
+        'message': 'Not implemented'
+    }), 501
 
