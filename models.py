@@ -1,20 +1,26 @@
 from peewee import *
-
+from flask_login import UserMixin
 import datetime
 
 DATABASE = SqliteDatabase('deadringer.sqlite')
 
+class User(Model, UserMixin):
+    #username = CharField(unique=True)
+    email = CharField(unique=True)
+    password = CharField()
+    class Meta():
+        database = DATABASE
+
 class Message(Model):
-    #author = ForeignKeyField(User, backref='messages')
+    author = ForeignKeyField(User, backref='messages')
     body = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
     trigger_time = DateTimeField()
-
     class Meta():
         database = DATABASE
 
 def initialize():
     DATABASE.connect()
-    print('Safely created database table "Messages"')
-    DATABASE.create_tables([Message], safe=True)
+    DATABASE.create_tables([Message, User], safe=True)
+    print('Safely created database models "Message" and "User"')
     DATABASE.close()
