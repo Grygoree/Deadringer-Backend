@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 import models
 from playhouse.shortcuts import model_to_dict
 
@@ -11,7 +11,6 @@ def test_user_controller():
 
 @users.route('/register', methods=["POST"])
 def register_user():
-    #see if email taken and pword valid
     payload = request.get_json()
     user_email = payload['email'].lower()
     payload['email'] = user_email
@@ -33,8 +32,25 @@ def register_user():
 
 @users.route('/login', methods=["POST"])
 def login_user():
-    #see if email exists and pword valid
-    return jsonify({'status': 'login'})
+    payload = request.get_json()
+    user_email = payload['email'].lower()
+    try:
+        found_user = models.User.get(models.User.email == user_email)
+        hashed_pass = found_user.password
+        password_does_match = check_password_hash(hashed_pass, payload['password'])
+        if (password_does_match):
+            print('good password')
+        else:
+            print('bad password')
+        return jsonify(data={}, status={
+            'code': 401,
+            'message': 'Failed to log in. Email does not exist or password incorrect.'
+        }), 401
+    except models.DoesNotExist:
+        return jsonify(data={}, status={
+            'code': 401,
+            'message': 'Failed to log in. Email does not exist or password incorrect.'
+        }), 401
 
 @users.route('/logout', methods=["POST"])
 def logout_user():
