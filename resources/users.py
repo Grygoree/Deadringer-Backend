@@ -39,13 +39,15 @@ def login_user():
         hashed_pass = found_user.password
         password_does_match = check_password_hash(hashed_pass, payload['password'])
         if (password_does_match):
-            print('good password')
+            return jsonify(data={}, status={
+                'code': 200,
+                'message': 'Logged in successfully as {}'.format(user_email)
+            }), 200
         else:
-            print('bad password')
-        return jsonify(data={}, status={
-            'code': 401,
-            'message': 'Failed to log in. Email does not exist or password incorrect.'
-        }), 401
+            return jsonify(data={}, status={
+                'code': 401,
+                'message': 'Failed to log in. Email does not exist or password incorrect.'
+            }), 401
     except models.DoesNotExist:
         return jsonify(data={}, status={
             'code': 401,
