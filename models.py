@@ -19,8 +19,15 @@ class Message(Model):
     class Meta():
         database = DATABASE
 
+class Receipt(Model):
+    message = ForeignKeyField(Message, backref='recipients')
+    to_user = ForeignKeyField(User, backref='received_messages')
+    #status = enum/bool? unread, read, archived
+    class Meta():
+        database = DATABASE
+
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([Message, User], safe=True)
-    print('Safely created database models "Message" and "User"')
+    DATABASE.create_tables([Message, User, Receipt], safe=True)
+    print('Safely created database models "Message", "User", and "Receipt"')
     DATABASE.close()
