@@ -1,5 +1,6 @@
 from flask import Flask
 from resources.messages import messages
+from resources.users import users
 import models
 
 #TODO: Fix these for provisioning
@@ -9,6 +10,7 @@ PORT = 3000
 app = Flask(__name__)
 
 app.register_blueprint(messages, url_prefix='/api/v0/messages/')
+app.register_blueprint(users, url_prefix='/users/')
 
 @app.route('/')
 def hello():
