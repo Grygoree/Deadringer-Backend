@@ -58,12 +58,38 @@ def create_message():
 
 @messages.route('<id>', methods=["PUT"])
 def update_message(id):
-    return jsonify(data={
-        'route': 'Update message ' + id
-    }, status={
-        'code': 501,
-        'message': 'Not implemented'
-    }), 501
+    try:
+        message = models.Message.get_by_id(id)
+        if not message.author.id == current_user.id:
+            return jsonify(
+                data={},
+                status={
+                    'code': 403,
+                    'message': 'User can only delete their own messages or message does not exist'
+                })
+        else:
+            payload = request.get_json()
+            message.body = payload['body'] if 'body' in payload else None
+            #TODO: figure out a good way to edit dates
+            #message.trigger_time = payload['trigger_time'] if 'trigger_time' in payload else None
+            #TODO: figure out a good way to edit recipients
+            message.save()
+
+            message_dict = model_to_dict(message)
+            message_dict['author'].pop('password')
+            return jsonify(
+                data=message_dict,
+                status={
+                    'code': 200,
+                    'message': 'Successfully deleted message'
+                })
+    except models.DoesNotExist:
+        return jsonify(
+            data={},
+            status={
+                'code': 403,
+                'message': 'User can only delete their own messages or message does not exist'
+            })
 
 @messages.route('<id>', methods=["DELETE"])
 def delete_message(id):
