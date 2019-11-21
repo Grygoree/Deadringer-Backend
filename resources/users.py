@@ -42,6 +42,7 @@ def register():
         payload['password'] = hashed_pass
         created_user = models.User.create(**payload)
         user_dict = model_to_dict(created_user)
+        del user_dict['password']
         return jsonify(data=user_dict, status={
             'code': 201,
             'message': 'Successfully registered {}'.format(user_email)
