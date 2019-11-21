@@ -37,8 +37,8 @@ def create_message():
     payload = request.get_json()
 
     message = models.Message.create(
-        author = 1,#current_user.id
-        body =  payload['body'],
+        author = current_user.id,
+        body = payload['body'],
         trigger_time = datetime.datetime.now() + datetime.timedelta(days=1),
     )
 
@@ -69,7 +69,7 @@ def update_message(id):
 def delete_message(id):
     try:
         message = models.Message.get_by_id(id)
-        if message.author.id != 1: #current_user.id
+        if not message.author.id == current_user.id:
             return jsonify(
                 data={},
                 status={
@@ -79,6 +79,7 @@ def delete_message(id):
         else:
             message.delete_instance()
             message_dict = model_to_dict(message)
+            message_dict['author'].pop('password')
             return jsonify(
                 data=message_dict,
                 status={
