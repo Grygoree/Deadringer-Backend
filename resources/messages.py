@@ -7,7 +7,7 @@ def get_messages():
     return jsonify(data={
         'route': 'Index messages'
     }, status={
-        'code': 501, 
+        'code': 501,
         'message': 'Not implemented'
     }), 501
 
