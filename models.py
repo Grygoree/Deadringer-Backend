@@ -8,7 +8,7 @@ class User(Model, UserMixin):
     #username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField()
-    class Meta():
+    class Meta:
         database = DATABASE
 
 class Message(Model):
@@ -16,14 +16,14 @@ class Message(Model):
     body = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
     trigger_time = DateTimeField()
-    class Meta():
+    class Meta:
         database = DATABASE
 
 class Receipt(Model):
     message = ForeignKeyField(Message, backref='recipients')
     to_user = ForeignKeyField(User, backref='received_messages')
     #status = enum/bool? unread, read, archived
-    class Meta():
+    class Meta:
         database = DATABASE
 
 def initialize():
