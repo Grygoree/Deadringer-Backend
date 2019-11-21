@@ -72,7 +72,13 @@ def login():
             'message': 'Failed to log in. Email does not exist or password incorrect.'
         }), 401
 
-@users.route('/logout', methods=["POST"])
+@users.route('/logout', methods=["GET"])
 def logout():
-    #clear session
-    return jsonify({'status': 'logout'})
+    logout_message = 'Logged out of no user'
+    if current_user.is_authenticated:
+        logout_message = 'Logged out of {}'.format(current_user.email)
+        logout_user()
+    return jsonify(data={}, status={
+        'code': 200,
+        'message': logout_message
+    }), 200
