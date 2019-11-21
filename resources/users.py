@@ -8,7 +8,23 @@ users = Blueprint('users', __name__)
 
 @users.route('/', methods=['GET'])
 def test_user_controller():
-    return "You are not logged in"
+    if current_user.is_authenticated:
+        return jsonify(
+            data={},
+            status = {
+                'code': 200,
+                'message': "You are logged in as {}".format(current_user.email)
+            }
+        ), 200
+    else:
+        return jsonify(
+            data={},
+            status={
+                'code': 401,
+                'message': "No user is logged in."
+            }
+        ), 401
+
 
 @users.route('/register', methods=["POST"])
 def register():
@@ -40,7 +56,7 @@ def login():
         hashed_pass = found_user.password
         password_does_match = check_password_hash(hashed_pass, payload['password'])
         if (password_does_match):
-            #login_user(user_email)
+            login_user(found_user)
             return jsonify(data={}, status={
                 'code': 200,
                 'message': 'Logged in successfully as {}'.format(user_email)
