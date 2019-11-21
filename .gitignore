@@ -6,3 +6,5 @@
 
 __pycache__
 deadringer.sqlite
+deadringer.seed.sqlite
+
