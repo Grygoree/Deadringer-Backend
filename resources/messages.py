@@ -2,14 +2,16 @@ from flask import Blueprint, jsonify, request
 import models
 from playhouse.shortcuts import model_to_dict
 import datetime
+from flask_login import login_required, current_user
 
 messages = Blueprint('messages', __name__)
 
 @messages.route('', methods=["GET"])
+@login_required
 def get_messages():
     try:
         users_messages = models.Message.select().where(
-            models.Message.author_id == 1#current_user.id
+            models.Message.author_id == current_user.id
         )
         message_dicts = [model_to_dict(m) for m in users_messages]
         for m in message_dicts:

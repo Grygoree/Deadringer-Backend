@@ -1,4 +1,4 @@
-from flask import Flask, g
+from flask import Flask, g, jsonify
 from resources.messages import messages
 from resources.users import users
 import models
@@ -22,6 +22,15 @@ def load_user(user_id):
         return models.User.get_by_id(user_id)
     except:
         return None
+
+@login_manager.unauthorized_handler
+def send_unauth():
+    return jsonify(
+        data={},
+        status={
+            'code': 401,
+            'message': 'You must be logged in to access that resource.'
+        }), 401
 
 app.register_blueprint(messages, url_prefix='/api/v0/messages')
 app.register_blueprint(users, url_prefix='/api/v0/users')
