@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from resources.messages import messages
 from resources.users import users
 import models
