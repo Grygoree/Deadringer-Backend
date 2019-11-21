@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_login import login_user, current_user, logout_user
 import models
 from playhouse.shortcuts import model_to_dict
 
@@ -10,7 +11,7 @@ def test_user_controller():
     return "You are not logged in"
 
 @users.route('/register', methods=["POST"])
-def register_user():
+def register():
     payload = request.get_json()
     user_email = payload['email'].lower()
     payload['email'] = user_email
@@ -31,7 +32,7 @@ def register_user():
         }), 201
 
 @users.route('/login', methods=["POST"])
-def login_user():
+def login():
     payload = request.get_json()
     user_email = payload['email'].lower()
     try:
@@ -39,6 +40,7 @@ def login_user():
         hashed_pass = found_user.password
         password_does_match = check_password_hash(hashed_pass, payload['password'])
         if (password_does_match):
+            #login_user(user_email)
             return jsonify(data={}, status={
                 'code': 200,
                 'message': 'Logged in successfully as {}'.format(user_email)
@@ -55,6 +57,6 @@ def login_user():
         }), 401
 
 @users.route('/logout', methods=["POST"])
-def logout_user():
+def logout():
     #clear session
     return jsonify({'status': 'logout'})
