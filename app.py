@@ -3,10 +3,12 @@ from resources.messages import messages
 from resources.users import users
 import models
 from flask_login import LoginManager
+from flask_cors import CORS
 
 #TODO: Fix these for provisioning
 DEBUG = True
 PORT = 3000
+ALLOWED_CORS_CLIENTS = ['http://localhost:3001']
 
 app = Flask(__name__)
 
@@ -31,6 +33,9 @@ def send_unauth():
             'code': 401,
             'message': 'You must be logged in to access that resource.'
         }), 401
+
+CORS(users, origins=ALLOWED_CORS_CLIENTS, supports_credentials=True)
+CORS(messages, origins=ALLOWED_CORS_CLIENTS, supports_credentials=True)
 
 app.register_blueprint(messages, url_prefix='/api/v0/messages')
 app.register_blueprint(users, url_prefix='/api/v0/users')
