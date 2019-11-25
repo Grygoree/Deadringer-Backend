@@ -26,11 +26,10 @@ def get_messages():
         ), 200
     except models.DoesNotExist:
         return jsonify(data={
-            'route': 'Index messages'
         }, status={
-            'code': 501,
-            'message': 'Not implemented'
-        }), 501
+            'code': 500,
+            'message': 'Unable to retrieve messages'
+        }), 500
 
 @messages.route('', methods=["POST"])
 @login_required
@@ -72,7 +71,7 @@ def update_message(id):
                 data={},
                 status={
                     'code': 403,
-                    'message': 'User can only delete their own messages or message does not exist'
+                    'message': 'User can only update their own messages or message does not exist'
                 })
         else:
             payload = request.get_json()
@@ -88,14 +87,14 @@ def update_message(id):
                 data=message_dict,
                 status={
                     'code': 200,
-                    'message': 'Successfully deleted message'
+                    'message': 'Successfully updated message'
                 })
     except models.DoesNotExist:
         return jsonify(
             data={},
             status={
                 'code': 403,
-                'message': 'User can only delete their own messages or message does not exist'
+                'message': 'User can only update their own messages or message does not exist'
             })
 
 @messages.route('<id>', methods=["DELETE"])
