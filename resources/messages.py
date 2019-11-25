@@ -33,6 +33,7 @@ def get_messages():
         }), 501
 
 @messages.route('', methods=["POST"])
+@login_required
 def create_message():
     payload = request.get_json()
 
@@ -62,6 +63,7 @@ def create_message():
         }), 201
 
 @messages.route('<id>', methods=["PUT"])
+@login_required
 def update_message(id):
     try:
         message = models.Message.get_by_id(id)
@@ -97,6 +99,7 @@ def update_message(id):
             })
 
 @messages.route('<id>', methods=["DELETE"])
+@login_required
 def delete_message(id):
     try:
         message = models.Message.get_by_id(id)
