@@ -42,13 +42,18 @@ def create_message():
         trigger_time = datetime.datetime.now() + datetime.timedelta(days=1),
     )
 
-    for recipient in payload['recipients']:
-        print(recipient)
-        #create a receipt
+    #Make a Receipt for each existant email address in the request
+    #Silently don't create a receipt if email does not exist
+    for to_email in payload['recipients']:
+        try:
+            found_recipient = models.User.get(models.User.email == to_email)
+            models.Receipt.create(to_user=found_recipient, message=message)
+        except models.DoesNotExist:
+            pass
 
+    #Give a success response with removed password
     message_dict = model_to_dict(message)
     message_dict['author'].pop('password')
-
     return jsonify(
         data=message_dict,
         status={
