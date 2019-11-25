@@ -2,7 +2,10 @@ from peewee import *
 from flask_login import UserMixin
 import datetime
 
-DATABASE = SqliteDatabase('deadringer.sqlite')
+#DATABASE = SqliteDatabase('deadringer.sqlite')
+DATABASE = PostgresqlDatabase(
+    'deadringer'
+)
 
 class User(Model, UserMixin):
     #username = CharField(unique=True)
@@ -10,6 +13,7 @@ class User(Model, UserMixin):
     password = CharField()
     class Meta:
         database = DATABASE
+        table_name = 'account'
 
 class Message(Model):
     author = ForeignKeyField(User, backref='messages')
@@ -29,5 +33,5 @@ class Receipt(Model):
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([Message, User, Receipt], safe=True)
-    print('Safely created database models "Message", "User", and "Receipt"')
+    print('Safely created database models')
     DATABASE.close()
