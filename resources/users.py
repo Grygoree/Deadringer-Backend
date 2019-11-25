@@ -58,7 +58,7 @@ def login():
         password_does_match = check_password_hash(hashed_pass, payload['password'])
         if (password_does_match):
             login_user(found_user)
-            return jsonify(data={}, status={
+            return jsonify(data={'email': found_user.email}, status={
                 'code': 200,
                 'message': 'Logged in successfully as {}'.format(user_email)
             }), 200
