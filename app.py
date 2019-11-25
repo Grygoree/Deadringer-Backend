@@ -1,6 +1,7 @@
 from flask import Flask, g, jsonify
 from resources.messages import messages
 from resources.users import users
+from resources.received import received
 import models
 from flask_login import LoginManager
 from flask_cors import CORS
@@ -36,9 +37,11 @@ def send_unauth():
 
 CORS(users, origins=ALLOWED_CORS_CLIENTS, supports_credentials=True)
 CORS(messages, origins=ALLOWED_CORS_CLIENTS, supports_credentials=True)
+CORS(received, origins=ALLOWED_CORS_CLIENTS, supports_credentials=True)
 
 app.register_blueprint(messages, url_prefix='/api/v0/messages')
 app.register_blueprint(users, url_prefix='/api/v0/users')
+app.register_blueprint(received, url_prefix='/api/v0/received')
 
 @app.before_request
 def before_request():
