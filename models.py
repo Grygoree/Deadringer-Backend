@@ -20,8 +20,8 @@ class Message(Model):
         database = DATABASE
 
 class Receipt(Model):
-    message = ForeignKeyField(Message, backref='recipients')
-    to_user = ForeignKeyField(User, backref='received_messages')
+    message = ForeignKeyField(Message, backref='recipients', on_delete='CASCADE')
+    to_user = ForeignKeyField(User, backref='received_messages', on_delete='CASCADE')
     #status = enum/bool? unread, read, archived
     class Meta:
         database = DATABASE
