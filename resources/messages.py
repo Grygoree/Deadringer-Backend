@@ -39,7 +39,7 @@ def create_message():
     message = models.Message.create(
         author = current_user.id,
         body = payload['body'],
-        trigger_time = datetime.datetime.now() + datetime.timedelta(days=1),
+        trigger_time = datetime.datetime.now() + datetime.timedelta(minutes=120),
     )
 
     #Make a Receipt for each existant email address in the request
