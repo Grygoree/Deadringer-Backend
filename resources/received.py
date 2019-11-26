@@ -6,7 +6,7 @@ import datetime
 
 received = Blueprint('received', __name__)
 
-@received.route('', methods=["GET"])
+@received.route('/', methods=["GET"])
 @login_required
 def get_inbox():
     """ Only returns messages whose trigger date is now """
