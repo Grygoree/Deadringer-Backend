@@ -18,7 +18,7 @@ def get_inbox():
         .received_messages
         .join(models.Message)
         .select()
-        .where(models.Message.trigger_time > datetime.datetime.now()))
+        .where(models.Message.trigger_time < datetime.datetime.now()))
 
         received_messages_dicts = [model_to_dict(m) for m in triggered_messages]
         #Scrub passwords
