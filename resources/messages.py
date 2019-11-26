@@ -36,10 +36,11 @@ def get_messages():
 def create_message():
     payload = request.get_json()
 
+    lifetime_minutes = int(payload['minutes']) if 'minutes' in payload else 120
     message = models.Message.create(
         author = current_user.id,
         body = payload['body'],
-        trigger_time = datetime.datetime.now() + datetime.timedelta(minutes=120),
+        trigger_time = datetime.datetime.now() + datetime.timedelta(minutes=lifetime_minutes),
     )
 
     #Make a Receipt for each existant email address in the request
