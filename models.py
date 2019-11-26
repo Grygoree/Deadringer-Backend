@@ -26,7 +26,7 @@ class Message(Model):
 class Receipt(Model):
     message = ForeignKeyField(Message, backref='recipients', on_delete='CASCADE')
     to_user = ForeignKeyField(User, backref='received_messages', on_delete='CASCADE')
-    #status = enum/bool? unread, read, archived
+    is_read = BooleanField(default=False)
     class Meta:
         database = DATABASE
 
